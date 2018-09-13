@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Vue TEST</title>
+  <script src="https://jp.vuejs.org/js/vue.js"></script>
+  <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+  <style type="text/css">
+    #app {
+      width: 800px;
+      margin: 0 auto;
+    }
+    .tab {
+      width: 100%;
+      padding: 0;
+      margin: 0;
+      list-style-type: none;
+      display: flex;
+    }
+    .tab li {
+      border: solid 2px #ccc;
+      border-width: 2px 2px 0 2px;
+      border-radius: 10px 10px 0 0;
+      padding: 5px;
+      width: 50%;
+      box-sizing: border-box;
+    }
+    .tab li.inactive {
+      border: solid 2px #ccc;
+      border-width: 2px 2px 0 2px;
+      border-radius: 10px 10px 0 0;
+      background: #eeeeee;
+      padding: 5px;
+      width: 50%;
+      box-sizing: border-box;
+      cursor: pointer;
+    }
+    .listOuter {
+      border: solid 2px #ccc;
+      border-radius: 0 0 10px 10px;
+    }
+    .add {
+      margin: 10px 0 0 20px;
+    }
+    ul li {
+      cursor: pointer;
+    }
+    .done {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="app">
+    <ul class="tab">
+      <li>TODO</li>
+      <li class="inactive">DONE</li>
+    </ul>
+    <div class="listOuter todo">
+      <p class="add">
+        <input type="text" placeholder="TODO" v-model="newItemTitle" v-on:keyup.enter="addTodo(newItemTitle)">
+      </p>
+      <ul id="todo">
+        <li v-for="(item, index) in items" v-on:click="removeTodo(index)">{{index}} : {{ item.title }}</li>
+      </ul>
+    </div>
+    <div class="listOuter done">
+      <ul id="done">
+        <li v-for="(item, index) in removedItems">{{index}} : {{ item.title }}</li>
+      </ul>
+    </div>
+  </div>
+
+  <script>/* vue */
+  const vm = new Vue({
+    el: '#app',
+    data: {
+      items: [
+        { title: '領収書を準備する'},
+        { title: 'Vue.jsハンズオンの資料を作る'},
+        { title: '参加者の人数を確認する'},
+        { title: 'ピザを注文する'},
+        { title: '参加費のお釣りを準備する'},
+        { title: '会場設営をする'}
+      ],
+      removedItems: [
+        { title: '参加費のお釣りを準備する'}
+      ],
+      newItemTitle: ''
+    },
+    methods: {
+      addTodo: function(newTitle){
+        this.items.push({
+          title: newTitle
+        });
+        this.newItemTitle = '';
+      },
+      removeTodo: function(index) {
+        this.removedItems.push({
+          title: this.items.splice(index, 1)
+        });
+        this.items.splice(index, 1);
+      },
+    }
+  })
+
+  </script>
+
+  <script>/* jQuery, TODOとDONE切り替え */
+    $(function(){
+      $(document).on('click', '.inactive', function() {
+        $('.tab li').toggleClass('inactive');
+        $('.todo').toggle();
+        $('.done').toggle();
+      })
+    });
+  </script>
+
+</body>
+</html>
