@@ -98,7 +98,7 @@
       },
       removeTodo: function(index) {
         this.removedItems.push({
-          title: this.items.splice(index, 1)
+          title: this.items[index].title
         });
         this.items.splice(index, 1);
       },
