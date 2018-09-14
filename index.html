@@ -42,7 +42,10 @@
     .add {
       margin: 10px 0 0 20px;
     }
-    ul li {
+    .deleteBtn {
+      margin: 10px 0 0 20px;
+    }
+    ul#todo li {
       cursor: pointer;
     }
     .done {
@@ -66,6 +69,9 @@
       </ul>
     </div>
     <div class="listOuter done">
+      <p class="deleteBtn">
+        <input type="button" v-on:click="deleteTodo()" value="全て削除">
+      </p>
       <ul id="done">
         <li v-for="(item, index) in removedItems">{{index}} : {{ item.title }}</li>
       </ul>
@@ -102,6 +108,10 @@
           title: this.items[index].title
         });
         this.items.splice(index, 1);
+        this.saveList();
+      },
+      deleteTodo: function() {
+        this.removedItems.splice(0, this.removedItems.length);
         this.saveList();
       },
       loadList: function() {
