@@ -95,13 +95,32 @@
           title: newTitle
         });
         this.newItemTitle = '';
+        this.saveList();
       },
       removeTodo: function(index) {
         this.removedItems.push({
           title: this.items[index].title
         });
         this.items.splice(index, 1);
+        this.saveList();
       },
+      loadList: function() {
+        this.items = JSON.parse(localStorage.getItem('items'));
+        if (!this.items) {
+          this.items = [];
+        };
+        this.removedItems = JSON.parse(localStorage.getItem('removedItems'));
+        if (!this.removedItems) {
+          this.removedItems = [];
+        };
+      },
+      saveList: function() {
+        localStorage.setItem('items', JSON.stringify(this.items));
+        localStorage.setItem('removedItems', JSON.stringify(this.removedItems));
+      },
+    },
+    mounted: function() {
+      this.loadList();
     }
   })
 
